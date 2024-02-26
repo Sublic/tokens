@@ -3,9 +3,12 @@ const Big = require('big.js');
 
 const erc20Json = require('../contractABIs/ERC20.json');
 
-var currentSublicFactory = "";
+var currentSublicFactory = "0xa0aF1bD02C5b810bBcc06cd1b941014cF8a794f9";
+const algebraFactory = "0xFBFB64eD1C70bb8d4c8bFCc338C10a5120809538"
+const algebraPositiionManager = "0xF1E919e24159b14aC32790dD4828B671E2158982"
+const algebraSwapRouter = "0xc12f40f584A751C032e18f5757d3b7EE6fD74289"
 
-const verify = false
+const verify = true
 var deployer;
 
 async function main() {
@@ -21,9 +24,16 @@ async function main() {
 
 async function deploySublicFactory() {
   console.log("Deploying Sublic Factory")
+  if (currentSublicFactory != "") {
+    console.log("Already deployed: " + currentSublicFactory)
+    return
+  }
 
   const Factory = await ethers.getContractFactory("SublicFactory");
   const contract = await Factory.deploy(
+    algebraFactory,
+    algebraPositiionManager,
+    algebraSwapRouter
   );
   await contract.deployed();
   console.log("Address of Sublic Factory:", contract.address);
@@ -36,6 +46,9 @@ async function deploySublicFactory() {
         address: currentSublicFactory,
         network: hre.network,
         constructorArguments: [
+          algebraFactory,
+          algebraPositiionManager,
+          algebraSwapRouter
         ]
     });
   } catch (error) {

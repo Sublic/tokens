@@ -13,6 +13,7 @@
     "updates": "^15.1.1"
   },
   "scripts": {
+    "deploy:bnb-test": "hardhat run --network bscTestnet ./scripts/deploy.js",
     "deploy:sepolia": "hardhat run --network sepolia ./scripts/deploy.js",
     "deploy:opsepolia": "hardhat run --network optimisticSepolia ./scripts/deploy.js",
     "test:dependencies": "updates --update ./"

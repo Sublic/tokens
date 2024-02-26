@@ -5,7 +5,7 @@ require("dotenv").config();
 
 require("dotenv").config({ path: __dirname + "/.env" });
 
-const { PRIVATE_KEY, ETHERSCAN, POLYGONSCAN, FTMSCAN, OPTSCAN } = process.env;
+const { PRIVATE_KEY, ETHERSCAN, POLYGONSCAN, FTMSCAN, OPTSCAN, BSCSCAN } = process.env;
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -20,6 +20,12 @@ module.exports = {
     //   gasPrice: 26 * 1e9,
     //   chainId: 1,
     // },
+    bscTestnet: {
+      url: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      accounts: [PRIVATE_KEY],
+      gasPrice: 5*10e9,
+      chainId: 97,
+    },
     sepolia: {
       url: "https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
       accounts: [PRIVATE_KEY],
@@ -73,6 +79,9 @@ module.exports = {
       polygon: POLYGONSCAN,
       polygonMumbai: POLYGONSCAN,
       optimisticSepolia: OPTSCAN,
+      // bnb
+      bsc: BSCSCAN,
+      bscTestnet: BSCSCAN
     },
     customChains: [
       {
