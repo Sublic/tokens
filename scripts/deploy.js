@@ -3,7 +3,7 @@ const Big = require('big.js');
 
 const erc20Json = require('../contractABIs/ERC20.json');
 
-var currentSublicFactory = "0xa0aF1bD02C5b810bBcc06cd1b941014cF8a794f9";
+var currentSublicFactory = "0x2Ffa9118E0D93DcfA189D2Db08Ad7d45AC663904";
 const algebraFactory = "0xFBFB64eD1C70bb8d4c8bFCc338C10a5120809538"
 const algebraPositiionManager = "0xF1E919e24159b14aC32790dD4828B671E2158982"
 const algebraSwapRouter = "0xc12f40f584A751C032e18f5757d3b7EE6fD74289"
@@ -19,7 +19,7 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   // Factory setup
-  // await deploySublicFactory()
+  await deploySublicFactory()
 }
 
 async function deploySublicFactory() {

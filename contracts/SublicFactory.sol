@@ -72,6 +72,7 @@ contract SublicFactory is SwapMultihop, AdminAccess {
                 deadline: block.timestamp + 10000
             });
         positionManager.mint{value: 0}(params);
+        emit NewSubscriptionTokenCreated(newToken);
     }
 
     /* ========== VIEWS ========== */
@@ -109,6 +110,7 @@ contract SublicFactory is SwapMultihop, AdminAccess {
 
     function setSublicUSDCPool(IAlgebraPoolState newPool) external onlyAdminOrOwner() {
         sublicUSDCPool = newPool;
+        emit SublicUSDCPoolUpdated(address(newPool));
     }
 
     function withdrawToken(
@@ -126,4 +128,9 @@ contract SublicFactory is SwapMultihop, AdminAccess {
         (bool success, ) = _to.call{value: _amount}("");
         require(success, "Failed to send Ether");
     }
+
+    /* ========== EVENTS ========== */
+
+    event NewSubscriptionTokenCreated(address indexed token);
+    event SublicUSDCPoolUpdated(address indexed pool);
 }
