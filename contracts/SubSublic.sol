@@ -1,18 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
 
 import './helpers/AdminAccess.sol';
 
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract SublicToken is AdminAccess, ReentrancyGuard {
+contract SubSublic is ERC20, ERC20Burnable, AdminAccess, ReentrancyGuard {
 
     /* ========== CONSTANTS ========== */
-
-    string public name;
 
     /* ========== STRUCTS ========== */
 
@@ -21,10 +20,11 @@ contract SublicToken is AdminAccess, ReentrancyGuard {
     /* ========== CONSTRUCTOR ========== */
 
     constructor(
-        string memory _name,
+        string memory _name, 
+        string memory _symbol,
         address _admin
-    ) AdminAccess(_admin) {
-        name = _name;
+    ) ERC20(_name, _symbol) AdminAccess(_admin) {
+        _mint(msg.sender, 100_000_000_000 * 10**18);
     }
 
     /* ========== USER FUNCTIONS ========== */
