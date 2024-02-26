@@ -53,7 +53,7 @@ contract SublicFactory is SwapMultihop, AdminAccess {
         address token0;
         address token1;
         (token0, token1) = newToken < SUBLIC ? (newToken, SUBLIC) : (SUBLIC, newToken);
-        positionManager.createAndInitializePoolIfNecessary{value: 0}(
+        address pool = positionManager.createAndInitializePoolIfNecessary{value: 0}(
             token0,
             token1,
             79228162514264337593543950336
@@ -72,7 +72,7 @@ contract SublicFactory is SwapMultihop, AdminAccess {
                 deadline: block.timestamp + 10000
             });
         positionManager.mint{value: 0}(params);
-        emit NewSubscriptionTokenCreated(newToken);
+        emit NewSubscriptionTokenCreated(newToken, pool);
     }
 
     /* ========== VIEWS ========== */
@@ -131,6 +131,6 @@ contract SublicFactory is SwapMultihop, AdminAccess {
 
     /* ========== EVENTS ========== */
 
-    event NewSubscriptionTokenCreated(address indexed token);
+    event NewSubscriptionTokenCreated(address indexed token, address indexed pool);
     event SublicUSDCPoolUpdated(address indexed pool);
 }
