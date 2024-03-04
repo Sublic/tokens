@@ -12,6 +12,8 @@ import "./interfaces/IAlgebraPoolState.sol";
 import "./SwapMultihop.sol";
 import "./SubSublic.sol";
 
+import "./interfaces/IMediaFactory.sol";
+
 import './helpers/AdminAccess.sol';
 
 import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -24,20 +26,24 @@ contract SublicFactory is SwapMultihop, AdminAccess {
     address public immutable treasury = 0x03154a61eb5283C76a8F73d9De717A86aAbE1703;
     IAlgebraFactory public immutable factory;
     INonfungiblePositionManager public positionManager;
+    IMediaFactory public mediaFactory;
 
     /* ========== STATE VARIABLES ========== */
     mapping(string => address) public vaultAddresses;
     IAlgebraPoolState public sublicUSDCPool;
+    uint256 public subscriptionPrice = 10000000000000000000;
 
     /* ========== CONSTRUCTOR ========== */
 
     constructor(
         IAlgebraFactory _factory,
         INonfungiblePositionManager _positionManager,
-        ISwapRouter _swapRouter
+        ISwapRouter _swapRouter,
+        IMediaFactory _mediaFactory
     ) AdminAccess(msg.sender) {
         factory = _factory;
         positionManager = _positionManager;
+        mediaFactory = _mediaFactory;
         setSwapRouter(_swapRouter);
         IERC20(SUBLIC).approve(address(positionManager), 99999999999999999999999999999000);
     }
@@ -74,6 +80,26 @@ contract SublicFactory is SwapMultihop, AdminAccess {
         positionManager.mint{value: 0}(params);
         emit NewSubscriptionTokenCreated(newToken, pool);
     }
+
+    function buySubscriptionWithUSDC(
+        uint256 amountIn, 
+        string memory mediaName
+    ) external {
+        address token = mediaFactory.mediaTokens(mediaName);
+        swapExactInputMultihop(amountIn, token);
+        bytes32 mediaId = mediaFactory.mediaIds(mediaName);
+        checkTokensAndGrantSubscriptionOfEnough(msg.sender, token, mediaId);
+    }
+
+    function checkTokensAndGrantSubscriptionOfEnough(
+        address user,
+        address token,
+        bytes32 mediaId
+    ) public {
+        require(IERC20(token).balanceOf(user) > subscriptionPrice, "Not enough balance");
+        mediaFactory.addToGroup(user, mediaId);
+    }
+
 
     /* ========== VIEWS ========== */
 
@@ -113,6 +139,11 @@ contract SublicFactory is SwapMultihop, AdminAccess {
         emit SublicUSDCPoolUpdated(address(newPool));
     }
 
+    function setMediaFactory(IMediaFactory newFactory) external onlyAdminOrOwner() {
+        mediaFactory = newFactory;
+        emit MediaFactoryUpdated(address(newFactory));
+    }
+
     function withdrawToken(
         IERC20 _tokenToWithdraw, 
         address _to, 
@@ -133,4 +164,5 @@ contract SublicFactory is SwapMultihop, AdminAccess {
 
     event NewSubscriptionTokenCreated(address indexed token, address indexed pool);
     event SublicUSDCPoolUpdated(address indexed pool);
+    event MediaFactoryUpdated(address indexed pool);
 }

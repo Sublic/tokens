@@ -7,6 +7,7 @@ var currentSublicFactory = "0x1697A8D0dFeBE8b55399Fcc548EE6f833791F5E7";
 const algebraFactory = "0xFBFB64eD1C70bb8d4c8bFCc338C10a5120809538"
 const algebraPositiionManager = "0xF1E919e24159b14aC32790dD4828B671E2158982"
 const algebraSwapRouter = "0xc12f40f584A751C032e18f5757d3b7EE6fD74289"
+const mediaFactory = "0x2A397072D65f3f066C059eD25daB9244cb9E1F7e"
 
 const verify = true
 var deployer;
@@ -33,7 +34,8 @@ async function deploySublicFactory() {
   const contract = await Factory.deploy(
     algebraFactory,
     algebraPositiionManager,
-    algebraSwapRouter
+    algebraSwapRouter,
+    mediaFactory,
   );
   await contract.deployed();
   console.log("Address of Sublic Factory:", contract.address);
@@ -48,7 +50,8 @@ async function deploySublicFactory() {
         constructorArguments: [
           algebraFactory,
           algebraPositiionManager,
-          algebraSwapRouter
+          algebraSwapRouter,
+          mediaFactory,
         ]
     });
   } catch (error) {

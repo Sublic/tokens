@@ -29,7 +29,7 @@ abstract contract SwapMultihop {
     /// @dev The calling address must approve this contract to spend at least `amountIn` worth of its USDC for this function to succeed.
     /// @param amountIn The amount of USDC to be swapped.
     /// @return amountOut The amount of NEW_TOKEN received after the swap.
-    function swapExactInputMultihop(uint256 amountIn, address token) external returns (uint256 amountOut) {
+    function swapExactInputMultihop(uint256 amountIn, address token) public returns (uint256 amountOut) {
         // Transfer `amountUSDCIn` of USDC to this contract.
         TransferHelper.safeTransferFrom(USDC, msg.sender, address(this), amountIn);
 
