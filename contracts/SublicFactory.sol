@@ -85,7 +85,7 @@ contract SublicFactory is SwapMultihop, AdminAccess {
         uint256 amountIn, 
         bytes32 mediaId
     ) external {
-        address token = mediaFactory.resources(mediaId).token;
+        address token = mediaFactory.getSubscriptionToken(mediaId);
         swapExactInputMultihop(amountIn, token);
         checkTokensAndGrantSubscriptionOfEnough(msg.sender, token, mediaId);
     }
