@@ -7,7 +7,7 @@ var currentSublicFactory = "";
 const algebraFactory = "0xFBFB64eD1C70bb8d4c8bFCc338C10a5120809538";
 const algebraPositiionManager = "0xF1E919e24159b14aC32790dD4828B671E2158982";
 const algebraSwapRouter = "0xc12f40f584A751C032e18f5757d3b7EE6fD74289";
-const mediaFactory = "0x763463468E37424ED7a8740d412DD87f216Ff9C5";
+const mediaFactory = "0xce1611f040e70c10f56cb7b6f428f423d0ae8098";
 
 const verify = true;
 var deployer;
