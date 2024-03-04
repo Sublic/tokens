@@ -83,11 +83,10 @@ contract SublicFactory is SwapMultihop, AdminAccess {
 
     function buySubscriptionWithUSDC(
         uint256 amountIn, 
-        string memory mediaName
+        bytes32 mediaId
     ) external {
-        address token = mediaFactory.mediaTokens(mediaName);
+        address token = mediaFactory.resources(mediaId).token;
         swapExactInputMultihop(amountIn, token);
-        bytes32 mediaId = mediaFactory.mediaIds(mediaName);
         checkTokensAndGrantSubscriptionOfEnough(msg.sender, token, mediaId);
     }
 
@@ -96,8 +95,9 @@ contract SublicFactory is SwapMultihop, AdminAccess {
         address token,
         bytes32 mediaId
     ) public {
-        require(IERC20(token).balanceOf(user) > subscriptionPrice, "Not enough balance");
-        mediaFactory.addToGroup(user, mediaId);
+        if (IERC20(token).balanceOf(user) > subscriptionPrice) {
+            mediaFactory.addToGroup(user, mediaId);
+        }
     }
 
 
